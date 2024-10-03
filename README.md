@@ -71,23 +71,14 @@ The following files are provided in the [case study folder](https://github.com/j
 | Case study_repair_balanced      | Third version with aggressive repair implemented |
 | Case study_update               | Final version with requirements updated         |
 
-## Pattern Application
+## Machine Learning Reliability Solution Patterns
 
 > [!IMPORTANT]  
 > This feature requires Astah* System Safety with object constraint language (OCL) support to work. Please contact the Astah* representative for the availability of the product.
 
-### Install
-First of all, you need to install the plugin into Astah* System Safety. Please visit the pattern-application branch and download it. Then, you can install it. The plugin can be installed in one of the following ways:
-
-1. Drag and drop the plugin file onto the Astah* window.
-2. Install from the "Install" button on the plugin list.
-
-To use the installed plugins, you must restart Astah* after installation ([install the plugin in astah* System Safety official site](https://astah.change-vision.com/ja/manual-sys/reference/basic_function/plugin.html#id3)).
-
-### Machine Learning Reliability Solution Patterns
 With this plugin, you can use the following Machine Learning Reliability Solution Patterns (Table 2). 
 
-Please refer to [pattern-application branch](https://github.com/jst-qaml/m3s-astah-plugin/tree/pattern-application) for the specific version with the solution patterns function implemented.
+Please refer to [pattern-application branch](https://github.com/jst-qaml/m3s-astah-plugin/tree/pattern-application) for the specific version with the solution patterns feature implemented.
 
 *Table 2: Extracted Machine Learning Reliability Solution Patterns*
 | ID  | Pattern Name                         | Problem (Excerpt)                                                                                   | Solution (Excerpt)                                                                          |
