@@ -1,0 +1,7 @@
+Number,Description
+0,Mobility
+1,Drivable
+2,Obstacle
+3,Water
+4,Indoor
+5,Void
