@@ -77,7 +77,7 @@ The following files are provided in the [case study folder](https://github.com/j
 > This feature requires Astah* System Safety with object constraint language (OCL) support to work. Please contact the Astah* representative for the availability of the product.
 
 ### Install
-First of all, you need to install the plugin into astah* System Safety. Please visit the pattern-application branch and download it. Then, you can install it. The plugin can be installed in one of the following ways:
+First of all, you need to install the plugin into Astah* System Safety. Please visit the pattern-application branch and download it. Then, you can install it. The plugin can be installed in one of the following ways:
 
 1. Drag and drop the plugin file onto the Astah* window.
 2. Install from the "Install" button on the plugin list.
@@ -85,7 +85,9 @@ First of all, you need to install the plugin into astah* System Safety. Please v
 To use the installed plugins, you must restart Astah* after installation ([install the plugin in astah* System Safety official site](https://astah.change-vision.com/ja/manual-sys/reference/basic_function/plugin.html#id3)).
 
 ### Machine Learning Reliability Solution Patterns
-With this plugin, you can use the following Machine Learning Reliability Solution Patterns (Table 2).
+With this plugin, you can use the following Machine Learning Reliability Solution Patterns (Table 2). 
+
+Please refer to [pattern-application branch](https://github.com/jst-qaml/m3s-astah-plugin/tree/pattern-application) for the specific version with the solution patterns function implemented.
 
 *Table 2: Extracted Machine Learning Reliability Solution Patterns*
 | ID  | Pattern Name                         | Problem (Excerpt)                                                                                   | Solution (Excerpt)                                                                          |
@@ -98,33 +100,3 @@ With this plugin, you can use the following Machine Learning Reliability Solutio
 | P6  | Safeguard                            | Safe system shutdown within the warranty period cannot be guaranteed.                                | Rule-based Safety Guard Pattern                                                             |
 | P7  | Security requirement satisfaction argument | Security requirements must be evaluated in a data and model-driven manner.                            | Test data or formal verification                                                            |
 | P8  | DNN Robustness Case Verification Pattern | A security case based on the formal verification of robustness has yet to be verified.                | Arguments over the model verification, its inputs, and model integration into the system as a whole |
-
-### Usage of the plugin
-
-#### Step 1 Pattern applicability indication
-
-First, open the pattern selection support view and activate the plug-in. If there is a pattern in the GSN diagram open at that time that can be applied, the name of the pattern and the location where it is applied will be displayed (Figure 1). In Figure 1, P1, P2, and P4 could be applied at G31, and P5 could be applied at G32.
-
-<img width="1006" alt="CaseStudy_possibility" src="https://github.com/user-attachments/assets/4314c82f-8199-49a2-82c0-f734f0fcd3ae">
-
-*Figure 1: Example of Step 1 Pattern applicability indication.*
-
-#### Step 2 Select a pattern
-
-Selecting a pattern that was displayed in green will display the pattern application method options. Select the appropriate option from here (Figure 2). If P1 is selected in Figure 1, the result is Figure 2. In this case, there are three options: G31 matches the pattern, G31 and S3 match the pattern, or G31 and S4 match the pattern.
-
-<img width="796" alt="CaseStudy_selection2" src="https://github.com/user-attachments/assets/be08f01f-1e36-4967-952d-b66420d342a9">
-
-*Figure 2: Example of Step 2 Select a pattern.*
-
-#### Step 3 Pattern application
-
-Finally, the pattern is applied by selecting an option (Figure 3). If in Figure 2 the case where G31 and S4 match the pattern is selected, then Figure 3 is shown. This applied the pattern.
-
-<img width="764" alt="CaseStudy_application2" src="https://github.com/user-attachments/assets/7ccbe42b-e490-44ad-84b7-b663bfb48348">
-
-*Figure 3: Example of Step 3 Pattern application.*
-
-### Conclusion
-
-In this tutorial, we showed how to use a pattern application support framework. The above results are expected to complement engineers' prior knowledge and reduce human error.
