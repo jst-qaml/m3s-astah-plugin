@@ -47,6 +47,13 @@ OR
 - Select the .jar file
 - Restart the Astah System Safety for the installation to be implemented.
 
+
+＊When using the LLM feature within the pattern application, please set your OpenAI API key in the environment variable “OPENAI_API_KEY”. The following is an example for macOS.
+   ```
+   export OPENAI_API_KEY="YOUR_API_KEY"
+   ```
+
+
 ## Manual
 More complete instructions on how to operate the plugin are available on the manual below.
 
