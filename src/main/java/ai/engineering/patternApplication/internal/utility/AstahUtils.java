@@ -416,6 +416,57 @@ public class AstahUtils {
         return supportedByTargets;
     }
 
+    //任意のargumentAssetSourceを引数
+    public IElement getTopGoal(IArgumentAsset argumentAsset)throws ClassNotFoundException {
+        IFacet facet = AstahAPI.getAstahAPI().getProjectAccessor().getFacet(IGsnFacet.FACET_SYMBOLIC_NAME);
+        IModule rootElement = facet.getRootElement(IModule.class);
+        IArgumentAsset topGoal = argumentAsset;
+        List<IElement> tmpList = null;
+        //最終的に一つのトップゴールに集約される
+        for(;;){
+            tmpList = getSupportedByInContextOfSource(topGoal);
+            if(tmpList.isEmpty()){
+                return topGoal;
+            }
+            topGoal = (IArgumentAsset) tmpList.get(0);
+            System.out.println(topGoal);
+        }
+
+    }
+
+    public List<IElement> getSupportedByInContextOfSource(IArgumentAsset argumentAssetTarget) throws ClassNotFoundException {
+        IFacet facet = AstahAPI.getAstahAPI().getProjectAccessor().getFacet(IGsnFacet.FACET_SYMBOLIC_NAME);
+        IModule rootElement = facet.getRootElement(IModule.class);
+        List<IElement> supportedByInContextOfSources = new ArrayList<IElement>();
+        for (IArgumentationElement argumentationElement : rootElement.getArgumentationElements()) {
+            if (argumentationElement instanceof ISupportedBy
+                    && ((ISupportedBy) argumentationElement).getTarget() == argumentAssetTarget) {
+                supportedByInContextOfSources.add(((ISupportedBy) argumentationElement).getSource());
+            }else if (argumentationElement instanceof IInContextOf
+                    && ((IInContextOf) argumentationElement).getTarget() == argumentAssetTarget) {
+                supportedByInContextOfSources.add(((IInContextOf) argumentationElement).getSource());
+            }
+        }
+        return supportedByInContextOfSources;
+    }
+
+    public List<IElement> getSupportedByInContextOfTarget(IArgumentAsset argumentAssetSource) throws ClassNotFoundException {
+        IFacet facet = AstahAPI.getAstahAPI().getProjectAccessor().getFacet(IGsnFacet.FACET_SYMBOLIC_NAME);
+        IModule rootElement = facet.getRootElement(IModule.class);
+        List<IElement> supportedByInContextOfTargets = new ArrayList<IElement>();
+        for (IArgumentationElement argumentationElement : rootElement.getArgumentationElements()) {
+            if (argumentationElement instanceof ISupportedBy
+                    && ((ISupportedBy) argumentationElement).getSource() == argumentAssetSource) {
+                supportedByInContextOfTargets.add(((ISupportedBy) argumentationElement).getTarget());
+            }else if (argumentationElement instanceof IInContextOf
+                    && ((IInContextOf) argumentationElement).getSource() == argumentAssetSource) {
+                supportedByInContextOfTargets.add(((IInContextOf) argumentationElement).getTarget());
+            }
+        }
+        return supportedByInContextOfTargets;
+    }
+
+
     //高速化
     public List<IElement> getSupportedByTarget(IArgumentAsset argumentAssetSource, ArrayList<ArrayList<IElement>> SupportedByAdjacencyList) throws ClassNotFoundException {
         List<IElement> supportedByTargets = new ArrayList<IElement>();
@@ -450,8 +501,4 @@ public class AstahUtils {
         String time = String.format("%02d:%02d:%02d:%d", hour, minute, second, mills % 1000);//現在時刻表示
         System.out.println("Current Time: " + time);
     }
-
-
-
-
 }

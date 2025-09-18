@@ -1,4 +1,5 @@
 ai/engineering/RelatedElementView.class
+ai/engineering/patternApplication/internal/extraTab/LLMPatternSearchTab$1.class
 ai/engineering/VersionFetcher.class
 ai/engineering/MLCanvas.class
 ai/engineering/DesiredPerformance.class
@@ -17,6 +18,7 @@ ai/engineering/PerformanceCheckerAction$3.class
 ai/engineering/patternApplication/internal/PatternMatchingController$2.class
 ai/engineering/patternApplication/internal/PossibilitySupportController.class
 ai/engineering/PipelinePerformanceView.class
+ai/engineering/patternApplication/internal/LLMPatternSearchController.class
 ai/engineering/RepairModelAction.class
 ai/engineering/patternApplication/internal/entity/PatternConfigManager.class
 ai/engineering/patternApplication/internal/extraTab/InputPatternValuesTab.class
@@ -30,10 +32,13 @@ ai/engineering/ProcessEventHandler.class
 ai/engineering/ToolUtilities.class
 ai/engineering/RepairConfigurationView.class
 ai/engineering/AIProjectCanvasType.class
+ai/engineering/patternApplication/internal/LLMSolutionValueSupport.class
+ai/engineering/patternApplication/internal/GPTController.class
 ai/engineering/patternApplication/internal/extraTab/InputPatternValuesTab$1.class
 ai/engineering/TrainPanel.class
 ai/engineering/patternApplication/internal/PatternMatchingController$1.class
 ai/engineering/PipelinePerformanceView$1.class
+ai/engineering/patternApplication/internal/extraTab/LLMPatternSearchTab$2.class
 ai/engineering/ElementPicker.class
 ai/engineering/MonitoringConfigurations.class
 ai/engineering/GoalParser.class
@@ -54,6 +59,7 @@ ai/engineering/ClassNode$1.class
 ai/engineering/LabelConfiguration.class
 ai/engineering/patternApplication/internal/PatternMatchingController$3.class
 ai/engineering/patternApplication/Activator.class
+ai/engineering/patternApplication/internal/extraTab/LLMPatternSearchTab.class
 ai/engineering/TrainPanel$1.class
 ai/engineering/TestPanel$1.class
 ai/engineering/patternApplication/internal/OCLValidator$1.class
@@ -66,6 +72,7 @@ ai/engineering/TraceabilityRecommenderView.class
 ai/engineering/PerformanceCheckerAction.class
 ai/engineering/MisclassificationPerformance.class
 ai/engineering/RepairModelAction$1.class
+ai/engineering/patternApplication/internal/LLMPatternSearchController$Node.class
 ai/engineering/RelationLine.class
 ai/engineering/patternApplication/internal/CustomEvaluationEnvironment.class
 ai/engineering/CanvasModelListener.class
@@ -75,6 +82,7 @@ ai/engineering/patternApplication/internal/utility/AstahAPIUtils.class
 ai/engineering/RepairConfiguration.class
 ai/engineering/TemplateAction.class
 ai/engineering/RelationCheckerAction.class
+ai/engineering/patternApplication/internal/LLMPatternMatchingController.class
 ai/engineering/RepairConfigurationSummaryView.class
 ai/engineering/patternApplication/internal/extraTab/PatternRecommendTab$1.class
 ai/engineering/StereotypeNode.class

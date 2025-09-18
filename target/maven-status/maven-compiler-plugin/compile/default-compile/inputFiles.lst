@@ -1,3 +1,4 @@
+/Applications/astahPluginDev/m3s/src/main/java/ai/engineering/patternApplication/internal/LLMPatternMatchingController.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/pipeline/modeltrainer/TrainPanel.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/utilities/ElementTypeChecker.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/pipeline/monitortool/DesiredPerformance/DesiredPerformance.java
@@ -15,6 +16,7 @@
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/challenger/TestEvidenceChecker.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/pipeline/monitortool/DesiredPerformance/ConfusionMetricsPerformance.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/canvas/mlcanvas/MLCanvasView.java
+/Applications/astahPluginDev/m3s/src/main/java/ai/engineering/patternApplication/internal/LLMPatternSearchController.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/patternApplication/internal/exception/APIException.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/relationchecker/RelationCheckerAction.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/canvas/CanvasModel.java
@@ -33,6 +35,7 @@
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/pipeline/monitortool/GoalParser.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/pipeline/SSHConnector.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/pipeline/VersionFetcher.java
+/Applications/astahPluginDev/m3s/src/main/java/ai/engineering/patternApplication/internal/extraTab/LLMPatternSearchTab.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/utilities/ToolUtilities.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/utilities/Enum/MLCanvasType.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/pipeline/monitortool/ConfigJsonGenerator.java
@@ -44,6 +47,7 @@
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/patternApplication/internal/entity/PatternConfigManager.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/canvas/aiprojectcanvas/AIProjectCanvas.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/canvas/aiprojectcanvas/AIProjectCanvasView.java
+/Applications/astahPluginDev/m3s/src/main/java/ai/engineering/patternApplication/internal/GPTController.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/TemplateAction.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/TraceabilityRecommenderView.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/relatedelement/metamodelNodes/StereotypeNode.java
@@ -66,4 +70,5 @@
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/Activator.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/pipeline/repairtool/LabelConfiguration.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/patternApplication/internal/PossibilitySupportController.java
+/Applications/astahPluginDev/m3s/src/main/java/ai/engineering/patternApplication/internal/LLMSolutionValueSupport.java
 /Applications/astahPluginDev/m3s/src/main/java/ai/engineering/utilities/Enum/ModelType.java

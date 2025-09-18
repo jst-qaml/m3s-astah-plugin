@@ -1,6 +1,7 @@
 package ai.engineering.patternApplication.internal;
 
 import ai.engineering.patternApplication.internal.entity.*;
+import ai.engineering.patternApplication.internal.extraTab.*;
 import ai.engineering.patternApplication.internal.utility.*;
 import com.change_vision.jude.api.gsn.editor.*;
 import com.change_vision.jude.api.inf.editor.*;
@@ -21,15 +22,17 @@ public class PossibilitySupportController {
     private OCLValidator oclValidator = new OCLValidator();
 
     public boolean PatternPossibilitySupport(SelectionSupportDataBase selectionSupportDataBase){
-        IDiagram currentDiagram = astahAPIUtils.getDiagram();
-        //現在の図がnullの場合はエラーを出力して終了
-        if(currentDiagram == null){
-            System.out.println("Error: currentDiagram is null");
-            return false;
-        }
-
         IPresentation[] iNodePresentations = null;
         try {
+            //IDiagram currentDiagram = astahAPIUtils.getDiagram();
+            IDiagram currentDiagram = astahAPIUtils.getSameNameDiagram(LLMPatternSearchTab.GetSafetyCaseNameText());//注意：もし指定している図がみつからない場合は、現在開いている図を取得
+            //現在の図がnullの場合はエラーを出力して終了
+            if(currentDiagram == null){
+                System.out.println("Error: currentDiagram is null");
+                return false;
+            }
+
+
             iNodePresentations = astahUtils.getOwnedINodePresentation(currentDiagram);//現在開いている図のプレゼンテーションを取得
         }catch (Exception e){
             e.printStackTrace();
@@ -49,6 +52,9 @@ public class PossibilitySupportController {
             //IOCLContext iOCLContext = (IOCLContext) iNodePresentations[i].getModel();
 
             for(int j = 0; j < patternConfigManager.oclInv.length; j++){
+                if(!selectionSupportDataBase.recommendedPatterns[j]){
+                    continue;
+                }
                 try {
                     //if((boolean)iOCLContext.evaluateOCL(patternConfigManager.oclInv[j][0])){
                     if(oclValidator.Validate(iNodePresentations[i].getModel(), patternConfigManager.oclInv[j][0])){
@@ -90,7 +96,9 @@ public class PossibilitySupportController {
 
             transactionManager = projectAccessor.getTransactionManager();
 
-            IDiagram currentDiagram = astahAPIUtils.getDiagram();
+            //IDiagram currentDiagram = astahAPIUtils.getDiagram();
+            IDiagram currentDiagram = astahAPIUtils.getSameNameDiagram(LLMPatternSearchTab.GetSafetyCaseNameText());//注意：もし指定している図がみつからない場合は、現在開いている図を取得
+
             //現在の図がnullの場合はエラーを出力して終了
             if (currentDiagram == null) {
                 System.out.println("Error: currentDiagram is null");

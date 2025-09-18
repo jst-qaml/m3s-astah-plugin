@@ -222,8 +222,8 @@ public class InputPatternValuesTab extends JPanel
             IntegerNaturalNumberInputVerifier verifier = new IntegerNaturalNumberInputVerifier();
             repeatNumber.setInputVerifier(verifier);//入力を自然数のみに制限（このScriptの下の方にクラスの定義あり）
 
-            repeatNumber.addFocusListener(new FocusAdapter() {
-                public void focusLost(FocusEvent evt) {
+            repeatNumber.addFocusListener(new java.awt.event.FocusAdapter() {
+                public void focusLost(java.awt.event.FocusEvent evt) {
                     boolean isNaturalNumber = verifier.verify(repeatNumber);
 
                     if(!isNaturalNumber){
@@ -364,7 +364,7 @@ public class InputPatternValuesTab extends JPanel
         }
 
 
-        transformationManager.ApplyPattern(patternName, inputPatternParameterNames, repeatN, supportedElementString, solutionParameterValue, false, null, "");
+        transformationManager.ApplyPattern(patternName, inputPatternParameterNames, repeatN, supportedElementString, solutionParameterValue, false, null, "", false);
 
     }
 

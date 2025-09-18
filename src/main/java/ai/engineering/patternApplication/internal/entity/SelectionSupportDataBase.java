@@ -16,7 +16,13 @@ public class SelectionSupportDataBase {
     public ArrayList<ArrayList<ArrayList<IElement>>> matchedAllIElements = new ArrayList<ArrayList<ArrayList<IElement>>>();
     public ArrayList<ArrayList<ArrayList<IElement>>> createdAllIElements = new ArrayList<ArrayList<ArrayList<IElement>>>();
 
+    public boolean[] recommendedPatterns;
 
+    public int llmMatchedPatternIndex = -1;
+    public String[] llmMatchedElementStrings;
+
+    public boolean isLLMMatch = true;
+    public boolean isStopOCL = false;
     private Const constClass = new Const();
     private AstahAPIUtils astahAPIUtils = new AstahAPIUtils();
 

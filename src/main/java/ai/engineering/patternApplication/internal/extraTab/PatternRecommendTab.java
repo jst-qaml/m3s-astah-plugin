@@ -61,10 +61,24 @@ public class PatternRecommendTab extends JPanel
         JButton startButton = new JButton("Start");
         startButton.setFont(new Font("Arial", fontStyle, fontSize));
         panel.add(startButton, gbc);
+
+        // Use LLM チェックボックス
+        gbc.gridy = 1; // ボタンの下に配置
+        gbc.gridx = 0;
+        gbc.anchor = GridBagConstraints.WEST; // 左寄せ（お好みで変更可）
+        JCheckBox useLLMCheckbox = new JCheckBox("Use LLM");
+        useLLMCheckbox.setFont(new Font("Arial", fontStyle, fontSize));
+        panel.add(useLLMCheckbox, gbc);
+
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PatternSelectionSupportMain();
+                boolean[] recommendPatterns = new boolean[patternConfigManager.patternParameterExplanationNames.length];
+                for(int i = 0; i < patternConfigManager.patternParameterExplanationNames.length; i++){
+                    recommendPatterns[i] = true;
+                }
+                boolean isLLMMatch = useLLMCheckbox.isSelected();
+                PatternSelectionSupportMain(recommendPatterns, isLLMMatch, false, -1);
             }
         });
 
@@ -72,15 +86,31 @@ public class PatternRecommendTab extends JPanel
         add(panel);
     }
 
-    public void PatternSelectionSupportMain(){
+    public void PatternSelectionSupportMain(boolean[] recommendPatterns, boolean isLLMMatch, boolean isStopOCL, int llmPatternN) {
         AstahUtils astahUtils = new AstahUtils();
         astahUtils.GetCurrentTime();
 
         long startPossibilityTime = System.currentTimeMillis();//実行時間計測開始
 
         SelectionSupportDataBase selectionSupportDataBase = new SelectionSupportDataBase();
+        selectionSupportDataBase.isLLMMatch = isLLMMatch;
+        selectionSupportDataBase.isStopOCL = isStopOCL;
+
+        //OCLを利用しない場合(PossibilityをskipしてLLMのみでのパターン推薦へ移る場合)
+        if(isStopOCL){
+            PatternMatchingController patternMatchingController = new PatternMatchingController();
+            selectionSupportDataBase.llmMatchedPatternIndex = llmPatternN;
+            patternMatchingController.selectionSupportDataBase = selectionSupportDataBase;
+            System.out.println("OCLMatchを使う");
+            patternMatchingController.OclMatch();
+
+            return;
+        }
+
         PossibilitySupportController possibilitySupportController = new PossibilitySupportController();
+        selectionSupportDataBase.recommendedPatterns = recommendPatterns;
         boolean isNext = possibilitySupportController.PatternPossibilitySupport(selectionSupportDataBase);
+
 
         if(!isNext){
             return;
@@ -163,6 +193,12 @@ public class PatternRecommendTab extends JPanel
     }
 
     public void activated() {
+//        LLMPatternMatchingController llmPatternMatchingController = new LLMPatternMatchingController();
+//        String[] response = llmPatternMatchingController.GetLLMMatchingResponse(0);
+//        //responseの中身を表示する
+//        for (int i = 0; i < response.length; i++) {
+//            System.out.println("Response[" + i + "]: " + response[i]);
+//        }
 
     }
 

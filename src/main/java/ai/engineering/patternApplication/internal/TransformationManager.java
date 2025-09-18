@@ -1,6 +1,7 @@
 package ai.engineering.patternApplication.internal;
 
 import ai.engineering.patternApplication.internal.entity.*;
+import ai.engineering.patternApplication.internal.extraTab.*;
 import ai.engineering.patternApplication.internal.utility.*;
 import com.change_vision.jude.api.gsn.editor.*;
 import com.change_vision.jude.api.gsn.model.*;
@@ -20,13 +21,37 @@ public class TransformationManager {
 
     private int patternIndex = -1;
 
-    public void ApplyPattern(String patternName, String[] inputPatternParameterNames, int repeatN, String supportedElement, String[][] inputSolutionParameterValues, boolean isSelectionSupport, SelectionSupportDataBase selectionSupportDataBase, String selectionColor){
+    public void ApplyPattern(String patternName, String[] inputPatternParameterNames, int repeatN, String supportedElement, String[][] inputSolutionParameterValues, boolean isSelectionSupport, SelectionSupportDataBase selectionSupportDataBase, String selectionColor, boolean isValueSupport){
         patternIndex = patternConfigManager.GetPatternIndex(patternName);
 
         String[] configPatternParameterNames = patternConfigManager.patternParameterExplanationNames[patternIndex];
         String[] configPatternParameterTypes = patternConfigManager.patternParameterTypes[patternIndex];
         int[][] configPatternLinkPair = patternConfigManager.patternLinkPair[patternIndex];
         String[][] configSolutionParameterValues = patternConfigManager.solutionParameter[patternIndex];
+
+        LLMSolutionValueSupport LLMSolutionValueSupport = new LLMSolutionValueSupport();
+        //SolutionValueSupportの場合のrepeatN関連の処理
+        if(isValueSupport && LLMSolutionValueSupport.isSolutionSelectionSupportPattern(patternIndex)){
+            repeatN = LLMSolutionValueSupport.GetRepeatN(patternIndex, repeatN);
+            //(repeatN-1)*repeatPartLengthの分だけ""をinputPatternParameterNamesに追加する
+            String[] tmp = new String[inputPatternParameterNames.length + (repeatN-1) * patternConfigManager.repeatPartLength[patternIndex]];
+            for(int i = 0; i < inputPatternParameterNames.length; i++){
+                tmp[i] = inputPatternParameterNames[i];
+            }
+            for(int i = 0; i < (repeatN-1) * patternConfigManager.repeatPartLength[patternIndex]; i++){
+                tmp[inputPatternParameterNames.length + i] = "";
+            }
+            inputPatternParameterNames = tmp;
+
+
+            String[][] tmpSolutionParameterValue = new String[patternConfigManager.solutionParameter[patternIndex].length*repeatN][];
+            for(int i = 0; i < tmpSolutionParameterValue.length; i++){
+                tmpSolutionParameterValue[i] = new String[patternConfigManager.solutionParameter[patternIndex][0].length];//毎回0番目を取得するため注意
+                Arrays.fill(tmpSolutionParameterValue[i], "");
+
+            }
+            inputSolutionParameterValues = tmpSolutionParameterValue;
+        }
 
         //繰り返しがある場合,repeatNの値によってParameterやLinkの繋ぎ方を変更
 
@@ -56,7 +81,13 @@ public class TransformationManager {
                 for(int j = 0; j < repeatPartLength; j++){
                     //Namesのコピー
                     String tmp = patternConfigManager.patternParameterExplanationNames[patternIndex][samePartLength + j];
-                    tmp = tmp.replace("{X[0]}", String.valueOf(i+1));
+
+                    //SolutionValueSupportの場合の文字の置き換え
+                    if(isValueSupport){
+                        tmp = LLMSolutionValueSupport.ReplaceSolutionValue(patternIndex, tmp,i);
+                    }else{
+                        tmp = tmp.replace("{X[0]}", String.valueOf(i+1));
+                    }
                     configPatternParameterNames[samePartLength + repeatPartLength * i + j] = tmp;
 
                     //Typesのコピー
@@ -106,7 +137,7 @@ public class TransformationManager {
 
         }
 
-        //パターン適応
+        //パターン適用
         try {
             ApplyPatternInstance(configPatternParameterNames,
                     configPatternParameterTypes,
@@ -147,7 +178,8 @@ public class TransformationManager {
 
             transactionManager = projectAccessor.getTransactionManager();
 
-            IDiagram currentDiagram = astahAPIUtils.getDiagram();
+            //IDiagram currentDiagram = astahAPIUtils.getDiagram();
+            IDiagram currentDiagram = astahAPIUtils.getSameNameDiagram(LLMPatternSearchTab.GetSafetyCaseNameText());//注意：もし指定している図がみつからない場合は、現在開いている図を取得
             //現在の図がnullの場合はエラーを出力して終了
             if(currentDiagram == null){
                 System.out.println("Error: currentDiagram is null");
@@ -408,7 +440,7 @@ public class TransformationManager {
             Point2D firstPoint = new Point2D.Double(0, 200);//firstPointの設定
             //demo用
             //Point2D firstPoint = new Point2D.Double(-30, 320);
-            double interval = 150;
+            double interval = 120;//150;
             for(int i = 0; i < inputPatternParameterNames.length; i++){
 
                 //中央揃えに変更したい
@@ -506,23 +538,43 @@ public class TransformationManager {
 
             for(int i = 0; i < inputPatternParameterNames.length; i++){
                 if(!isIArgumentExist[i]){
-                    //0番目はcontextなので左に少しずらし、1番目と同じy座標にする
                     //将来的に1番目はこの後のループでy座標が変更される場合は注意
                     if(i == 0){
-                        double xInterval = 500;
-                        iNodePresentationIArgumentationElement[i].setLocation(new Point2D.Double(iNodePresentationIArgumentationElement[1].getLocation().getX() - xInterval, iNodePresentationIArgumentationElement[1].getLocation().getY()));
+                        //0番目は幅を変更しない
+                        //0番目は他の全てのノードの座標が確定してから変更する
                     }else if(i == 1){
+                        //幅を広げる
+                        iNodePresentationIArgumentationElement[i].setWidth(350);
+
                         //1番目は座標を変更しない
                     }else {
+                        //幅を広げる
+                        iNodePresentationIArgumentationElement[i].setWidth(350);
+
                         //2番目以降はx座標を中央揃えにする
                         double tmpX = centerX - iNodePresentationIArgumentationElement[i].getWidth() / 2.0;
 
                         iNodePresentationIArgumentationElement[i].setLocation(new Point2D.Double(tmpX, iNodePresentationIArgumentationElement[i-1].getLocation().getY() + interval));
 
                     }
-                }
 
+
+                }
             }
+
+            //0番目はcontextなので左に少しずらし、3番目と同じy座標にする
+            double xInterval = 200;
+            iNodePresentationIArgumentationElement[0].setLocation(new Point2D.Double(iNodePresentationIArgumentationElement[3].getLocation().getX() - xInterval, iNodePresentationIArgumentationElement[3].getLocation().getY()));
+
+            //solutionが2つあるパターンの場合は分岐になるように調整する
+            if(patternIndex == 0 || patternIndex == 2){
+                //最後から2番目を基準にして、最後から1番目と最後のノードを調整する
+                double solutionIntervalX = 100;
+                iNodePresentationIArgumentationElement[iNodePresentationIArgumentationElement.length-1].setLocation(new Point2D.Double(iNodePresentationIArgumentationElement[iNodePresentationIArgumentationElement.length-3].getLocation().getX()+75+solutionIntervalX, iNodePresentationIArgumentationElement[iNodePresentationIArgumentationElement.length-2].getLocation().getY()));
+                iNodePresentationIArgumentationElement[iNodePresentationIArgumentationElement.length-2].setLocation(new Point2D.Double(iNodePresentationIArgumentationElement[iNodePresentationIArgumentationElement.length-3].getLocation().getX()+75-solutionIntervalX, iNodePresentationIArgumentationElement[iNodePresentationIArgumentationElement.length-2].getLocation().getY()));
+            }
+
+
 
 
             //Layoutの調整?そもそもドラッグ可能にする？

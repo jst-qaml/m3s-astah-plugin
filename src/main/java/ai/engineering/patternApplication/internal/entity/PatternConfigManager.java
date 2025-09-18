@@ -24,10 +24,10 @@ public class PatternConfigManager {
             "P3 Reprioritize accuracy",
             "P4 Training data sampling",
             "P5 Model smoke testing",
-            "P6 Safeguard pattern",
-            "P7 Security requirement satisfaction argument pattern",
-            "P8 DNN Robustness Case Verification Pattern",
-            "P9 Domain specific DNN solution guide pattern"
+            "P6 Rule-based safeguard",
+            "P7 Security requirement satisfaction argument",
+            "P8 DNN robustness case verification",
+            "P9 Domain specific DNN solution guide"
     };
 
     //将来的には統合ElementConfigに統合する
@@ -47,35 +47,54 @@ public class PatternConfigManager {
 
              */
             //contextを0番目にすること
-            {"The model is already trained.\nSome classes is more important than other.","Model well trained" /*"Accuracy of identification of risky objects"*/, "Use model repair techniques"/*"Decomposition1"*/,"Well reparation of model after training", "Decomposed by important classes"/*"Decomposition2"*/,"Well reparation of {important class {X[0]}}", "RepairPriority for {important class {X[0]}} = {5}", "PreventDegradation for {important class {X[0]}} = {5}"},
-            {"The model has not been trained.", "Model well trained"/*"Model robustness able to handle adversarial security risk"*/, "Decomposition1","Model well trained for adversarial example the first time", "Decomposition2","Model trained using Fast Gradient Sign Method", "Value of ε"},
-            {"Model has been trained. Concept drift has been detected.","Stability against context drift", "Decomposition1","Well reparation of model to adapt", "Decomposition2","Well reparation of {important class {X[0]}}", "RepairPriority for {important class {X[0]} = {5}}", "PreventDegradation for {important class {X[0]}} = {5}"},
-            {"Model has been trained.","Model well trained", "Decomposition1","Model well trained under limited training data size", "Decomposition2","Training data size is sampled properly","Parameter"},
-            {"The model has just been retrained and need to be re-verified","Model well tested", "Decomposition1","Model well re-tested after updates efficiently", "Decomposition2", "Model passed type{X[0]} smoke testing", "Parameter{X[0]}"},
+            {"The model is already trained and some classes are more important than others","Model well trained" /*"Accuracy of identification of risky objects"*/, "Use model repair techniques"/*"Decomposition1"*/,"Solving deficiencies hinder analysis and countermeasures", "Use Machine Learning repair tool"/*"Decomposition2"*/,"Well reparation of {important class {X[0]}}", "RepairPriority for {important class {X[0]}} = {high}", "PreventDegradation for {important class {X[0]}} = {high}"},
+            {"The model has not been trained and is assumed to face malicious attacks from adversarial examples", "Model well trained"/*"Model robustness able to handle adversarial security risk"*/, "Response to malicious users","Solving the issues to respond to malicious users", "Use technique to counter adversarial example attacks","Model trained using Fast Gradient Sign Method", "Value of ε = {0}"},
+            {"The model is already trained and concept drift has been detected","Stability against concept drift", "Use model repair techniques","Solving critical scene recognition failures and unable to retraining", "Use Machine Learning repair tool","Well reparation of {important class {X[0]}}", "RepairPriority for {important class {X[0]}} = {high}", "PreventDegradation for {important class {X[0]}} = {high}"},
+            {"The model has already been trained and large training data not available","Model well trained", "Use data manipulation technique","Solves the problem of requiring large amounts of training and test data", "Use data sampling method","Training data size is sampled properly"},
+            {"The model has just been retrained and need to be re-verified","Model well tested", "Use model testing method","Solving the high cost of re-verification and retesting", "Use smoke testing method", "Model well re-tested in each type of test", "Model passed {type X smoke testing}"},
             //P10のcontextは現在なし
-            {"The machine learning system's application domain is clearly defined.","System is safe to operate outside expected domain", "Decomposition1","System switch to non-ML system outside expected domain", "Decomposition2","ML system is safe-guarded by rule-based system","Parameter"},
-            //Px Security requirement satisfaction argument patternは複数行
-            {"{Description of the DNN}", "{Description of the system}", "Security in regard to image classification is considered","A human in the system can mitigate adverserially pertubated inputs when noticed","{DNN} development satisfies its security requirements",
+            {"The machine learning system's application domain is clearly defined","System is safe to operate outside expected domain", "Switching to a non-ML system","Solving issues that do not guarantee a safe shutdown of the system within the warranty period", "Use rule-base safeguards","ML system is safe-guarded by rule-based function","Define threshold-based rules to override unsafe decisions made by the ML system"},
+            {"{The security requirement}", "The trained DNN satisfies {the security requirement}", "Argue through the DNN evaluation method", "{Justification of the chosen strategy}", "The {security requirement} is satisfied using test data",
                     //5
-                    "Present a number of randomly perturbed images to a domain expert, who decides if the input would be considered acceptable. This is used to determine a suitable robustness region for the dataset (assuming adversarial perturbations are as noticeable as random ones).",
-                    //6
-                    "Security Requirement 1: The System does not misclassify training examples with adversarial pertubations that are noticable by a human.","Argue through the DNN development stages","The data oriented stage satisfies the DNN security requirements","The model oriented stages satisfies the DNN security requirements","Argue through the DNN model oriented activities",
-                    //11
-                    "{Description of the DNN model oriented activities}", "The selected DNN architecture is appropriate to satisfy the security requirements", "The DNN training is appropriate to satisfy the security requirements", "The trained DNN satisfies the security requirements","Argue through the satisfaction of each security requirement\n",
-                    //16
-                    "The trained DNN satisfies Security Requirement 1", "Argue through the DNN evaluation method", "Formal verification of robustness is viable and proves no adverserial pertubation exists","Security Requirement 1 is satisfied using formal methods","Argue over formal specification and verification of the security requirement",
-                    //21
-                    "{The formal specified property} is the appropraite formalization of {the security requirement}","The formal model satisfies \n{the formal specified property}\n", "formalization of the robustness property with the previously determined size", "The specified robustness guarantees adversarial perturbations will be recognizable by humans in the system, significantly reducing the impact of an attack.","Formal verification via a-b-crown"
-            },
-            {"Adversarial examples that are not noticeable by humans in the system are unlikely", "Argue through the parts of DNN verification", "The inputs to the model verification are appropriate", "The model verification itself is appropriate", "The trained model's integration with the system is appropriate",
-                    //5
-                    "Argue through the DNN input space", "Argue through the elements of DNN verification", "The {validation dataset} is representative", "ε represents the smallest perturbation noticeable by a human", "ε is specified within the limits of the domain",
+                    "{The test data}", "Test results", "The {security requirement} is satisfied using formal methods", "{The formal method}", "Argue over formal specification and verification of the security requirement",
                     //10
+                    "{The formal specified property} is the appropraite formalization of {the security requirement}", "The formal model satisfies {the formal specified property}", "{The formal specified property}", "{Agreement over inspection conducted by domain and formalization expert}", "{Formal verification results}"},
+
+            {"DNNs are deployed in security-critical domains where adversarial attacks are particularly significant", "Robustness of already trained DNN is suitable for context", "Use verification techniques", "Solving the problem that a security case based on the formal verification of robustness has yet to be verified",
+
+                    "Argue through the parts of DNN verification", "The inputs to the model verification are appropriate", "The model verification itself is appropriate", "The trained model's integration with the system is appropriate",
+
+                    "Argue through the DNN input space", "Argue through the elements of DNN verification", "The {validation dataset} is representative", "ε represents the smallest perturbation noticeable by a human", "ε is specified within the limits of the domain",
+
                     "The {formal verification method} is appropriate", "The specified {verified accuracy} is appropriate", "The {verification framework-specific hyperparameters} are appropriate", "The formal verification result is safe", "Argument by domain expert",
-                    //15
+
                     "Argue whether validation data perturbed by different levels of noise is human-noticeable", "Comparison of epsilon and the parameters", "Argument by domain expert and formal verification expert", "Formal verification with the given inputs"
 
             },
+
+            //Px Security requirement satisfaction argument patternは複数行
+            //旧P7とP8
+//            {"{Description of the DNN}", "{Description of the system}", "Security in regard to image classification is considered","A human in the system can mitigate adverserially pertubated inputs when noticed","{DNN} development satisfies its security requirements",
+//                    //5
+//                    "Present a number of randomly perturbed images to a domain expert, who decides if the input would be considered acceptable. This is used to determine a suitable robustness region for the dataset (assuming adversarial perturbations are as noticeable as random ones).",
+//                    //6
+//                    "Security Requirement 1: The System does not misclassify training examples with adversarial pertubations that are noticable by a human.","Argue through the DNN development stages","The data oriented stage satisfies the DNN security requirements","The model oriented stages satisfies the DNN security requirements","Argue through the DNN model oriented activities",
+//                    //11
+//                    "{Description of the DNN model oriented activities}", "The selected DNN architecture is appropriate to satisfy the security requirements", "The DNN training is appropriate to satisfy the security requirements", "The trained DNN satisfies the security requirements","Argue through the satisfaction of each security requirement\n",
+//                    //16
+//                    "The trained DNN satisfies Security Requirement 1", "Argue through the DNN evaluation method", "Formal verification of robustness is viable and proves no adverserial pertubation exists","Security Requirement 1 is satisfied using formal methods","Argue over formal specification and verification of the security requirement",
+//                    //21
+//                    "{The formal specified property} is the appropraite formalization of {the security requirement}","The formal model satisfies \n{the formal specified property}\n", "formalization of the robustness property with the previously determined size", "The specified robustness guarantees adversarial perturbations will be recognizable by humans in the system, significantly reducing the impact of an attack.","Formal verification via a-b-crown"
+//            },
+//            {"Adversarial examples that are not noticeable by humans in the system are unlikely", "Argue through the parts of DNN verification", "The inputs to the model verification are appropriate", "The model verification itself is appropriate", "The trained model's integration with the system is appropriate",
+//                    //5
+//                    "Argue through the DNN input space", "Argue through the elements of DNN verification", "The {validation dataset} is representative", "ε represents the smallest perturbation noticeable by a human", "ε is specified within the limits of the domain",
+//                    //10
+//                    "The {formal verification method} is appropriate", "The specified {verified accuracy} is appropriate", "The {verification framework-specific hyperparameters} are appropriate", "The formal verification result is safe", "Argument by domain expert",
+//                    //15
+//                    "Argue whether validation data perturbed by different levels of noise is human-noticeable", "Comparison of epsilon and the parameters", "Argument by domain expert and formal verification expert", "Formal verification with the given inputs"
+//
+//            },
             {"We consider only the DNN component", "The target DNN model is dependable", "Decompose by DNN dependability patterns", "Survey to show the top-down patterns are comprehensive (AIQM, industry people)", "Distribution of prediction performance is acceptable",
                     //5
                     "Expected properties are satisfied for input-output relationship or its invariance", "ArchRepair (Kyudai)", "Rates of critical error types are sufficiently low", "Prediction performance is not too poor for specific (rare) classes", "Prediction performance is biased for specific (rare) classes/attributes",
@@ -107,23 +126,36 @@ public class PatternConfigManager {
             {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[2], constClass.argumentElementTypeNames[2]},
             {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[2]},
             {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[2], constClass.argumentElementTypeNames[2]},
+            {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0]},
             {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[2]},
             {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[2]},
-            {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[2]},
-            //Px Security requirement satisfaction argument patternは複数行
-            {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[5], constClass.argumentElementTypeNames[5], constClass.argumentElementTypeNames[0],
-                    constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0],
-                    constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0],
-                    constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[4], constClass.argumentElementTypeNames[0],
-                    constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[2],
-                    constClass.argumentElementTypeNames[2]
-            },
-            {constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0],
+            {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[4], constClass.argumentElementTypeNames[0],
+                    constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[2], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[1],
+                    constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[2], constClass.argumentElementTypeNames[2]},
+
+            {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0],constClass.argumentElementTypeNames[1],constClass.argumentElementTypeNames[0],
+
+                    constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0],
                     constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0],constClass.argumentElementTypeNames[0],
                     constClass.argumentElementTypeNames[0],constClass.argumentElementTypeNames[0],constClass.argumentElementTypeNames[0],constClass.argumentElementTypeNames[0],constClass.argumentElementTypeNames[2],
                     constClass.argumentElementTypeNames[2],constClass.argumentElementTypeNames[2],constClass.argumentElementTypeNames[2],constClass.argumentElementTypeNames[2],
 
             },
+            //旧P7,8
+//            //Px Security requirement satisfaction argument patternは複数行
+//            {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[5], constClass.argumentElementTypeNames[5], constClass.argumentElementTypeNames[0],
+//                    constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0],
+//                    constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0],
+//                    constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[4], constClass.argumentElementTypeNames[0],
+//                    constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[2],
+//                    constClass.argumentElementTypeNames[2]
+//            },
+//            {constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0],
+//                    constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0],constClass.argumentElementTypeNames[0],
+//                    constClass.argumentElementTypeNames[0],constClass.argumentElementTypeNames[0],constClass.argumentElementTypeNames[0],constClass.argumentElementTypeNames[0],constClass.argumentElementTypeNames[2],
+//                    constClass.argumentElementTypeNames[2],constClass.argumentElementTypeNames[2],constClass.argumentElementTypeNames[2],constClass.argumentElementTypeNames[2],
+//
+//            },
             //P9 Domain specific DNN solution guide pattern
             {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[5], constClass.argumentElementTypeNames[0],
                     //5
@@ -148,16 +180,19 @@ public class PatternConfigManager {
             {{0,1},{1,2},{1,3}},
             {{0,1},{1,2}}
              */
-            {{1,0},{1,2},{2,3},{3,4},{4,5},{5,6},{5,7}},
+            {{3,0},{1,2},{2,3},{3,4},{4,5},{5,6},{5,7}},
             {{1,0},{1,2},{2,3},{3,4},{4,5},{5,6}},
             {{1,0},{1,2},{2,3},{3,4},{4,5},{5,6},{5,7}},
+            {{1,0},{1,2},{2,3},{3,4},{4,5}},
             {{1,0},{1,2},{2,3},{3,4},{4,5},{5,6}},
-            {{1,0},{1,2},{2,3},{3,4},{4,5},{5,6}},
-            {{1,0},{1,2},{2,3},{3,4},{4,5},{5,6}},
-            //Px Security requirement satisfaction argument patternは複数行
-            {{4,0},{4,1},{4,2},{4,3},{4,5},{4,7},{5,6},{7,8},{7,9},{9,6},{9,10},{10,11},{10,12},{10,13},{10,14},{14,15},{15,16},{16,6},{16,17},{17,18},{17,19},{19,20},{20,21},{20,22},{21,23},{21,24},{22,23},{22,25}},
-            //DNN Robustness Case Verification Pattern
-            {{0,1},{1,2},{1,3},{1,4},{2,5},{3,6},{5,7},{5,8},{5,9},{6,10},{6,11},{6,12},{6,13},{7,14},{8,15},{9,16},{10,17},{11,17},{12,17},{13,18}},
+            {{3,0},{1,2},{2,3},{3,4},{4,5},{5,6}},
+            {{1,0},{1,2},{2,3},{2,4},{2,7},{4,5},{4,6},{7,8},{7,9},{9,10},{9,11},{10,12},{10,13},{11,12},{11,14}},
+            {{1,2},{2,3},{3,0},{3,4},{4,5},{4,6},{4,7},{5,8},{6,9},{8,10},{8,11},{8,12},{9,13},{9,14},{9,15},{9,16},{10,17},{11,18},{12,19},{13,20},{14,20},{15,20},{16,21}},
+            //旧P7,8
+//            //Px Security requirement satisfaction argument patternは複数行
+//            {{4,0},{4,1},{4,2},{4,3},{4,5},{4,7},{5,6},{7,8},{7,9},{9,6},{9,10},{10,11},{10,12},{10,13},{10,14},{14,15},{15,16},{16,6},{16,17},{17,18},{17,19},{19,20},{20,21},{20,22},{21,23},{21,24},{22,23},{22,25}},
+//            //DNN Robustness Case Verification Pattern
+//            {{0,1},{1,2},{1,3},{1,4},{2,5},{3,6},{5,7},{5,8},{5,9},{6,10},{6,11},{6,12},{6,13},{7,14},{8,15},{9,16},{10,17},{11,17},{12,17},{13,18}},
             //P9 Domain specific DNN solution guide pattern
             {{1,0},{1,2},{2,3},{2,4},{2,5},{4,6},{4,7},{4,8},{4,9},{4,10},{4,11},{5,12},{5,13},{7,14},{7,15},{8,20},{10,20},{10,21},{11,22},{12,23},{13,24},{14,16},{14,17},{15,18},{15,19}}
     };
@@ -181,7 +216,7 @@ public class PatternConfigManager {
             {{}},
             {{}},
             {{}},
-            {{},{}},
+            {{},{},{}},
             {{},{},{},{},{}},
             {{},{},{},{},{},{},{},{},{}}
 
@@ -206,7 +241,7 @@ public class PatternConfigManager {
             {{}},
             {{}},
             {{}},
-            {{},{}},
+            {{},{},{}},
             {{},{},{},{},{}},
             {{},{},{},{},{},{},{},{},{}}
 
@@ -253,7 +288,8 @@ public class PatternConfigManager {
             false,
             false,
             false,
-            true,
+            //true,
+            false,
             true,
             false
     };
@@ -264,8 +300,9 @@ public class PatternConfigManager {
             {},
             {},
             {},
-            {8,12,13},
-            {4},
+            {},
+            //{8,12,13},
+            {7},
             {}
     };
     //Security requirement satisfaction argument patternのmoduleの設定
@@ -276,7 +313,8 @@ public class PatternConfigManager {
             false,
             false,
             false,
-            true,
+            false,
+            //true,
             false,
             false
     };
@@ -287,7 +325,8 @@ public class PatternConfigManager {
             "",
             "",
             "",
-            "Security requirement satisfaction argument pattern",
+            "",
+            //"Security requirement satisfaction argument pattern",
             "",
             ""
     };
@@ -298,7 +337,8 @@ public class PatternConfigManager {
             {},
             {},
             {},
-            {16,17,18,19,20,21,22,23,24,25},
+            {},
+            //{16,17,18,19,20,21,22,23,24,25},
             {},
             {}
     };

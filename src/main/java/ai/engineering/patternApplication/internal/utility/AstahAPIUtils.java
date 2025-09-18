@@ -178,4 +178,15 @@ public class AstahAPIUtils {
     }
 
 
+    public IDiagram getSameNameDiagram(String diagramName) throws ClassNotFoundException{
+        IFacet facet = AstahAPI.getAstahAPI().getProjectAccessor().getFacet(IGsnFacet.FACET_SYMBOLIC_NAME);
+        IModule module = facet.getRootElement(IModule.class);
+        for (IDiagram diagram : module.getDiagrams()) {
+            if (Objects.equals(diagram.getName(), diagramName)) {
+                return diagram;
+            }
+        }
+        //注意：もし指定している図がみつからない場合は、現在開いている図を取得
+        return getDiagram();
+    }
 }

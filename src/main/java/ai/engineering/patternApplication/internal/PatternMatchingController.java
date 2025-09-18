@@ -2,6 +2,7 @@ package ai.engineering.patternApplication.internal;
 
 import ai.engineering.patternApplication.internal.entity.*;
 import ai.engineering.patternApplication.internal.utility.*;
+import ai.engineering.patternApplication.internal.extraTab.LLMPatternSearchTab;
 import com.change_vision.jude.api.gsn.editor.*;
 import com.change_vision.jude.api.gsn.model.*;
 import com.change_vision.jude.api.inf.editor.*;
@@ -11,7 +12,9 @@ import com.change_vision.jude.api.inf.presentation.*;
 import com.change_vision.jude.api.inf.project.*;
 import com.change_vision.jude.api.inf.view.*;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 
 public class PatternMatchingController {
@@ -57,6 +60,7 @@ public class PatternMatchingController {
             //System.out.println("entitySelectionChanged");
             //Match();
             OclMatch();
+            //LLMMatch();はOclMatch()の中で呼び出す
             //リスナの変更は上位で行う必要がある?
             //IDiagramViewManager diagramViewManager = astahAPIUtils.getDiagramViewManager();
             //diagramViewManager.removeEntitySelectionListener(this);
@@ -229,6 +233,50 @@ public class PatternMatchingController {
     public void OclMatch(){
         //今はテストで一度だけに限定
         if(isMatched){
+            return;
+        }
+
+        //OCLを使わないでLLMのみでパターンマッチングする場合(possibilityもスキップしている)
+        if(selectionSupportDataBase.isStopOCL){
+            System.out.println("isLLMMatchを利用する");
+            if(selectionSupportDataBase.isLLMMatch){
+                int patternN = selectionSupportDataBase.llmMatchedPatternIndex;
+                System.out.println("LLMMatchを利用");
+
+                selectionSupportDataBase.createdAllIElements = new ArrayList<ArrayList<ArrayList<IElement>>>();
+                for(int i = 0; i < patternConfigManager.patternNames.length; i++){
+                    selectionSupportDataBase.createdAllIElements.add(new ArrayList<ArrayList<IElement>>());
+                }
+
+                //最初の色などを取得する
+                IPresentation[] iNodePresentations = null;
+                try {
+                    //IDiagram currentDiagram = astahAPIUtils.getDiagram();
+                    IDiagram currentDiagram = astahAPIUtils.getSameNameDiagram(LLMPatternSearchTab.GetSafetyCaseNameText());//注意：もし指定している図がみつからない場合は、現在開いている図を取得
+                    //現在の図がnullの場合はエラーを出力して終了
+                    if(currentDiagram == null){
+                        System.out.println("Error: currentDiagram is null");
+                        return;
+                    }
+
+
+                    iNodePresentations = astahUtils.getOwnedINodePresentation(currentDiagram);//現在開いている図のプレゼンテーションを取得
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                if(iNodePresentations == null){
+                    System.out.println("Error: iPresentations is null");
+                    return;
+                }
+
+                //以上がnull処理などのエラー処理
+                selectionSupportDataBase.SetINodePresentation(iNodePresentations);
+
+                LLMMatch(patternN);
+            }
+            isMatched = true;
+            ListenerChangeToApplySelectionPattern();
             return;
         }
 
@@ -424,6 +472,9 @@ public class PatternMatchingController {
 
             SelectionSupportDeleteViewOperation();
 
+            LLMPatternMatchingController llmPatternMatchingController = new LLMPatternMatchingController();
+            llmPatternMatchingController.SetGSNPrompt();//OCLのノード作成の前にダイアグラムを書き出しておかないと、OCLで作ったノードともマッチングが行われる
+
             for(int i = 0; i < 1/*matchedAllIElements.size()*/; i++){
                 //System.out.println("matchedAllIElements["+i+"]");
                 i = patternN;//今回必要なパターンのみに限定
@@ -439,13 +490,16 @@ public class PatternMatchingController {
                         //System.out.println(((IArgumentAsset)matchedAllIElements.get(i).get(j).get(0)).getContent());
                         //ApplyFunctionの呼び出し
                         //Recommendationの表示
-                        ShowRecommendationView(i, matchedAllIElements.get(i).get(j), true,selectionColor);
+                        ShowRecommendationView(i, matchedAllIElements.get(i).get(j), true,selectionColor, false);
 
 
                     }
                 }
             }
 
+            if(selectionSupportDataBase.isLLMMatch){
+                LLMMatch(patternN);
+            }
             isMatched = true;
             ListenerChangeToApplySelectionPattern();
 
@@ -470,7 +524,9 @@ public class PatternMatchingController {
 
             transactionManager = projectAccessor.getTransactionManager();
 
-            IDiagram currentDiagram = astahAPIUtils.getDiagram();
+            //IDiagram currentDiagram = astahAPIUtils.getDiagram();
+            IDiagram currentDiagram = astahAPIUtils.getSameNameDiagram(LLMPatternSearchTab.GetSafetyCaseNameText());//注意：もし指定している図がみつからない場合は、現在開いている図を取得
+
             //現在の図がnullの場合はエラーを出力して終了
             if (currentDiagram == null) {
                 System.out.println("Error: currentDiagram is null");
@@ -505,7 +561,7 @@ public class PatternMatchingController {
         return;
     }
 
-    private void ShowRecommendationView(int matchedPatternIndex, ArrayList<IElement> matchedIElements, boolean isSelectionSupport, String selectionColor){
+    private void ShowRecommendationView(int matchedPatternIndex, ArrayList<IElement> matchedIElements, boolean isSelectionSupport, String selectionColor, boolean isValueSupport){
         //RecommendationViewの表示
         String patternName = patternConfigManager.patternNames[matchedPatternIndex];
         String[] inputPatternParameterNames = new String[patternConfigManager.patternParameterExplanationNames[matchedPatternIndex].length];
@@ -533,7 +589,7 @@ public class PatternMatchingController {
         if(!isSelectionSupport){
             argSelectionSupportDataBase = null;
         }
-        transformationManager.ApplyPattern(patternName, inputPatternParameterNames, repeatN, supportedElementString, solutionParameterValue, isSelectionSupport, argSelectionSupportDataBase, selectionColor);
+        transformationManager.ApplyPattern(patternName, inputPatternParameterNames, repeatN, supportedElementString, solutionParameterValue, isSelectionSupport, argSelectionSupportDataBase, selectionColor, isValueSupport);
 
     }
 
@@ -564,6 +620,17 @@ public class PatternMatchingController {
             return;
         }
 
+        //LLMでつくったものであるならば(色が赤の場合)
+        try {
+            if(Objects.equals((((IArgumentAsset)selectedPresentations.get(0)).getPresentations()[0].getProperty("fill.color")), "#FF0000")){
+                LLMPatternApply();
+                return;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
         //選択されているプレゼンテーションがselectionで新規作成されたものであれば
         for(int i = 0; i < selectionSupportDataBase.createdAllIElements.size(); i++){
             System.out.println("matchedAllIElements["+i+"]");
@@ -578,12 +645,12 @@ public class PatternMatchingController {
                         }else{
                             //System.out.println(((IArgumentAsset)selectionSupportDataBase.matchedAllIElements.get(i).get(j).get(k)).getContent());
                             if(selectedPresentationIElement.equals(selectionSupportDataBase.createdAllIElements.get(i).get(j).get(k))){
-                                System.out.println("selectedPresentationIElement is matched");
+                                System.out.println("selectedPresentationIElement is matched:"+ ((IArgumentAsset) selectedPresentationIElement).getName());
                                 //削除
                                 SelectionSupportDeleteViewOperation();
 
                                 //選択された部分を正式にApplyする
-                                ShowRecommendationView(i, selectionSupportDataBase.matchedAllIElements.get(i).get(j), false, "");
+                                ShowRecommendationView(i, selectionSupportDataBase.matchedAllIElements.get(i).get(j), false, "", selectionSupportDataBase.isLLMMatch);
                                 RemoveApplySelectionPatternListenerTmp();
                                 //return;
                             }
@@ -620,5 +687,200 @@ public class PatternMatchingController {
         }
 
         return constClass.SELECTION_DEFAULT_COLOR;
+    }
+
+    public void LLMMatch(int patternN){
+        //以下はOCLMatchと同じ
+        //今はテストで一度だけに限定
+        if(isMatched){
+            return;
+        }
+
+        IPresentation[] selectedPresentationsNote = astahUtils.getSelectedPresentations(astahAPIUtils.getViewManager());
+        INodePresentation note = null;
+        //選択されていなければreturn
+        if(selectedPresentationsNote.length != 0){
+            if((selectedPresentationsNote[0] instanceof INodePresentation)){
+                System.out.println("selectedPresentation is not INodePresentation");
+                note = (INodePresentation) selectedPresentationsNote[0];
+            }
+        }
+
+//        int patternN = -1;
+//        //緑の看板の元のノードとパターンの番号を取得
+//        for(int i = 0; i < patternConfigManager.patternNames.length; i++){
+//            if(note.getLabel().equals("Possibility\n" + patternConfigManager.patternNames[i])){
+//                patternN = i;
+//                break;
+//            }
+//        }
+        if(patternN == -1){
+            return;
+        }
+//        IElement selectedPresentationIElement = (IElement) note.getLinks()[0].getTarget().getModel();
+//        System.out.println("selectedPresentationIElement = " + selectedPresentationIElement.getId());
+
+
+        //ここまではOCLMatchと同じ
+
+        //ここからLLMMatch
+        LLMPatternMatchingController llmPatternMatchingController = new LLMPatternMatchingController();
+        String[] llmMatchedElement = llmPatternMatchingController.GetLLMMatchingResponse(patternN);
+
+
+        //ShowRecommendの関数を参照してつくっている
+        String patternName = patternConfigManager.patternNames[patternN];
+//        String[] inputPatternParameterNames = new String[patternConfigManager.patternParameterExplanationNames[patternN].length];
+//        for(int i = 0; i < inputPatternParameterNames.length; i++){
+//            inputPatternParameterNames[i] = patternConfigManager.patternParameterExplanationNames[patternN][i];
+//        }
+//
+//        for(int i = 0; i < matchedIElements.size(); i++){
+//            inputPatternParameterNames[i+1] = ((IArgumentAsset) matchedIElements.get(i)).getName();
+//            System.out.println("inputPatternParameterNames["+(i+1)+"] = " + inputPatternParameterNames[i+1]);
+//        }
+
+        int repeatN = 0;
+        if(patternConfigManager.isRepeat[patternN]){
+            repeatN = 1;
+        }
+        String supportedElementString = "";
+        String[][] solutionParameterValue = new String[patternConfigManager.solutionParameter[patternN].length][];
+        for(int i = 0; i < solutionParameterValue.length; i++){
+            solutionParameterValue[i] = new String[patternConfigManager.solutionParameter[patternN][i].length];
+            Arrays.fill(solutionParameterValue[i], "");
+        }
+
+        SelectionSupportDataBase argSelectionSupportDataBase = selectionSupportDataBase;
+        boolean isSelectionSupport = true;
+        if(!isSelectionSupport){
+            argSelectionSupportDataBase = null;
+        }
+
+        String selectionColor = "#ff0000";//red
+        boolean isValueSupport = false;
+
+        selectionSupportDataBase.llmMatchedPatternIndex = patternN;
+        selectionSupportDataBase.llmMatchedElementStrings = llmMatchedElement;
+
+        //何もマッチしていない場合の対応
+        //llmMatchedElementの配列の中身の要素が全て""である場合をfor文で確かめる
+        boolean isAllEmpty = true;
+        for(String element : llmMatchedElement){
+            if(!element.equals("")){
+                isAllEmpty = false;
+                break;
+            }
+        }
+
+        if(isAllEmpty){
+            System.out.println("LLM did not match");
+            //noteと同じ場所にLLM did not matchのノートを作る
+            CreateNoteNoMatchedLLM(note);
+        }else{
+            transformationManager.ApplyPattern(patternName, llmMatchedElement, repeatN, supportedElementString, solutionParameterValue, isSelectionSupport, argSelectionSupportDataBase, selectionColor, isValueSupport);
+        }
+
+
+
+
+        //ShowRecommendationView(patternN, llmMatchedElement, true,"#ff0000", false);
+    }
+
+    public void LLMPatternApply(){
+        int patternN = selectionSupportDataBase.llmMatchedPatternIndex;
+        String[] llmMatchedElement = selectionSupportDataBase.llmMatchedElementStrings;
+
+        if(patternN == -1){
+            return;
+        }
+        String patternName = patternConfigManager.patternNames[patternN];
+
+        int repeatN = 0;
+        if(patternConfigManager.isRepeat[patternN]){
+            repeatN = 1;
+        }
+        String supportedElementString = "";
+        String[][] solutionParameterValue = new String[patternConfigManager.solutionParameter[patternN].length][];
+        for(int i = 0; i < solutionParameterValue.length; i++){
+            solutionParameterValue[i] = new String[patternConfigManager.solutionParameter[patternN][i].length];
+            Arrays.fill(solutionParameterValue[i], "");
+        }
+
+        SelectionSupportDataBase argSelectionSupportDataBase = selectionSupportDataBase;
+        boolean isSelectionSupport = false;
+        if(!isSelectionSupport){
+            argSelectionSupportDataBase = null;
+        }
+
+        String selectionColor = "";//なし
+        boolean isValueSupport = selectionSupportDataBase.isLLMMatch;
+
+        //削除
+        SelectionSupportDeleteViewOperation();
+        transformationManager.ApplyPattern(patternName, llmMatchedElement, repeatN, supportedElementString, solutionParameterValue, isSelectionSupport, argSelectionSupportDataBase, selectionColor, isValueSupport);
+
+        RemoveApplySelectionPatternListenerTmp();
+    }
+
+    private void CreateNoteNoMatchedLLM(INodePresentation possibilityNote){
+        //トランザクション処理
+        ProjectAccessor projectAccessor;
+        ITransactionManager transactionManager = null;
+        AstahAPIUtils astahAPIUtils = new AstahAPIUtils();
+        IFacet iFacet = null;
+
+        AstahTransactionProcessing astahTransactionProcessing = new AstahTransactionProcessing();
+        AstahUtils astahUtils = new AstahUtils();
+
+        try {
+
+            projectAccessor = astahAPIUtils.getProjectAccessor();
+            IModel iCurrentProject = projectAccessor.getProject();
+            iFacet = astahAPIUtils.getGSNFacet(projectAccessor);
+
+            transactionManager = projectAccessor.getTransactionManager();
+
+            //IDiagram currentDiagram = astahAPIUtils.getDiagram();
+            IDiagram currentDiagram = astahAPIUtils.getSameNameDiagram(LLMPatternSearchTab.GetSafetyCaseNameText());//注意：もし指定している図がみつからない場合は、現在開いている図を取得
+
+            //現在の図がnullの場合はエラーを出力して終了
+            if (currentDiagram == null) {
+                System.out.println("Error: currentDiagram is null");
+                return;
+            }
+
+            transactionManager.beginTransaction();
+            IDiagramEditorFactory diagramEditorFactory = projectAccessor.getDiagramEditorFactory();
+            GsnDiagramEditor gsnDiagramEditor = diagramEditorFactory.getDiagramEditor(GsnDiagramEditor.class);
+            gsnDiagramEditor.setDiagram(currentDiagram);
+
+            //default値
+            int positionX = 100;
+            int positionY = 100;
+            if(possibilityNote != null){
+                positionX = (int)(possibilityNote.getLocation().getX());
+                positionY = (int)(possibilityNote.getLocation().getY());
+            }
+
+            INodePresentation note = gsnDiagramEditor.createNote("LLM did not match", new Point(positionX, positionY));
+            selectionSupportDataBase.clearedPresentations.add(note);
+
+            note.setProperty("fill.color", "#ff0000");//赤色にする
+
+
+            transactionManager.endTransaction();
+        } catch (BadTransactionException e) {
+
+            transactionManager.abortTransaction();
+
+            // 処理（省略）
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+            e.printStackTrace();
+        }
+
+        return;
     }
 }
