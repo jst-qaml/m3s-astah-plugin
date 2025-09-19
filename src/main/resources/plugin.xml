@@ -37,6 +37,10 @@
               id="ai.engineering.internal.PatternRecommendationView"
               type="extraTab"
               class="ai.engineering.patternApplication.internal.extraTab.PatternRecommendTab" />
+          <view
+                  id="ai.engineering.internal.ChatbotUIView"
+                  type="extraTab"
+                  class="ai.engineering.patternApplication.internal.extraTab.LLMPatternSearchTab" />
    </extension>
    <extension point="com.change_vision.astah.ui.actionSets">
       <actionSet

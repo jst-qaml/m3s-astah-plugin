@@ -113,6 +113,16 @@ public class TransformationManager {
             }
         }
 
+        //repeatを持たないパターンとrepeatのパターンのsame部分のLLMのsolution valueの置き換え(repeat部分は重複するが問題はない)
+        if(isValueSupport){
+            for(int i = 0; i < configPatternParameterNames.length; i++){
+                String tmp = configPatternParameterNames[i];
+                tmp = LLMSolutionValueSupport.ReplaceSolutionValue(patternIndex, tmp,0);
+                configPatternParameterNames[i] = tmp;
+            }
+        }
+
+
         //supportedElementの追加
         if(!(supportedElement.isEmpty() || supportedElement == null)){
             //1番下にsupportedElementの情報を追加をする

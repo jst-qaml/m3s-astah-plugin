@@ -313,92 +313,99 @@ public class PatternMatchingController {
         //複数パターンについてのマッチ
         ArrayList<ArrayList<ArrayList<IElement>>> matchedAllIElements = new ArrayList<ArrayList<ArrayList<IElement>>>();
         List<Integer> matchedPatternIndex = new ArrayList<Integer>();
+        for(int i = 0; i < patternConfigManager.patternNames.length; i++){
+            ArrayList<ArrayList<IElement>> matchedIElements = new ArrayList<ArrayList<IElement>>();
+            matchedAllIElements.add(matchedIElements);
+        }
 
         //1つのパターンについてのマッチ
         ArrayList<ArrayList<IElement>> matchedIElements = new ArrayList<ArrayList<IElement>>();
 
         //Graph pattern matching
-        try{
-            //IOCLContext selectedContext = (IOCLContext) selectedPresentationIElement;
+//        try{
+//
+//            //IOCLContext selectedContext = (IOCLContext) selectedPresentationIElement;
+//
+//            IElement parentIElement = selectedPresentationIElement;
+//            int counter = 0;
+//
+//            //子ノードを取得するためのノードの隣接リストを作成
+//            //ArrayList<ArrayList<IElement>> SupportedByAdjacencyList = astahUtils.GetSupportedByAdjacencyList();
+//
+//            for(int i = 0; i < patternConfigManager.patternNames.length; i++){
+//                for(int j = 0; ; j++){//int j = 0; j < patternConfigManager.oclInv[i].length; j++){
+//                    if(j == 0){
+//                        matchedIElements = new ArrayList<ArrayList<IElement>>();
+//                        //3次元配列にもaddする
+//                        matchedAllIElements.add(matchedIElements);
+//
+//
+//                        counter = 0;
+//
+//                        //if((boolean)selectedContext.evaluateOCL(patternConfigManager.oclInv[i][j])){
+//                        if(oclValidator.Validate(selectedPresentationIElement, patternConfigManager.oclInv[i][j])){//note.getLinks()[0].getTarget()はselectされたpresentation
+//                            ArrayList<IElement> tmpList = new ArrayList<IElement>();
+//                            tmpList.add(selectedPresentationIElement);
+//                            matchedIElements.add(tmpList);
+//
+//                            matchedPatternIndex.add(i);
+//                            continue;
+//                        }else{
+//                            ArrayList<IElement> tmpList = new ArrayList<IElement>();
+//                            tmpList.add(null);
+//                            matchedIElements.add(tmpList);
+//                            break;
+//                        }
+//                    }
+//
+//
+//
+//                    parentIElement = matchedIElements.get(counter).get(matchedIElements.get(counter).size()-1);//リストの一番後ろの要素を取得
+//
+//
+//                    //parentの下にある要素を全て取得する
+//                    List<IElement> childIElements = astahUtils.getSupportedByTarget((IArgumentAsset) parentIElement);//, SupportedByAdjacencyList);
+//
+//                    if(childIElements.isEmpty()){
+//                        counter++;
+//
+//                        if(counter == matchedIElements.size()){
+//                            break;
+//                        }else{
+//                            continue;
+//                        }
+//                    }
+//
+//                    boolean isChildMatched = false;
+//                    for(int k = 0; k < childIElements.size(); k++){
+//                        //IOCLContext childContext = (IOCLContext) childIElements.get(k);
+//
+//                        //if((boolean)childContext.evaluateOCL(patternConfigManager.oclInv[i][matchedIElements.get(counter).size()])){
+//                        if(oclValidator.Validate(childIElements.get(k), patternConfigManager.oclInv[i][matchedIElements.get(counter).size()])){
+//                            ArrayList<IElement> copyList = new ArrayList<IElement>(matchedIElements.get(counter));
+//                            copyList.add(childIElements.get(k));
+//                            matchedIElements.add(copyList);
+//                            isChildMatched = true;
+//                        }
+//                    }
+//
+//                    counter++;
+//                    /*
+//
+//                    if(isChildMatched){
+//                        continue;
+//                    }else{
+//                        break;
+//                    }
+//
+//                     */
+//                    if(counter == matchedIElements.size()){
+//                        break;
+//                    }
+//                }
+//            }
+//
 
-            IElement parentIElement = selectedPresentationIElement;
-            int counter = 0;
-
-            //子ノードを取得するためのノードの隣接リストを作成
-            //ArrayList<ArrayList<IElement>> SupportedByAdjacencyList = astahUtils.GetSupportedByAdjacencyList();
-
-            for(int i = 0; i < patternConfigManager.patternNames.length; i++){
-                for(int j = 0; ; j++){//int j = 0; j < patternConfigManager.oclInv[i].length; j++){
-                    if(j == 0){
-                        matchedIElements = new ArrayList<ArrayList<IElement>>();
-                        //3次元配列にもaddする
-                        matchedAllIElements.add(matchedIElements);
-
-
-                        counter = 0;
-
-                        //if((boolean)selectedContext.evaluateOCL(patternConfigManager.oclInv[i][j])){
-                        if(oclValidator.Validate(selectedPresentationIElement, patternConfigManager.oclInv[i][j])){//note.getLinks()[0].getTarget()はselectされたpresentation
-                            ArrayList<IElement> tmpList = new ArrayList<IElement>();
-                            tmpList.add(selectedPresentationIElement);
-                            matchedIElements.add(tmpList);
-
-                            matchedPatternIndex.add(i);
-                            continue;
-                        }else{
-                            ArrayList<IElement> tmpList = new ArrayList<IElement>();
-                            tmpList.add(null);
-                            matchedIElements.add(tmpList);
-                            break;
-                        }
-                    }
-
-
-
-                    parentIElement = matchedIElements.get(counter).get(matchedIElements.get(counter).size()-1);//リストの一番後ろの要素を取得
-
-
-                    //parentの下にある要素を全て取得する
-                    List<IElement> childIElements = astahUtils.getSupportedByTarget((IArgumentAsset) parentIElement);//, SupportedByAdjacencyList);
-
-                    if(childIElements.isEmpty()){
-                        counter++;
-
-                        if(counter == matchedIElements.size()){
-                            break;
-                        }else{
-                            continue;
-                        }
-                    }
-
-                    boolean isChildMatched = false;
-                    for(int k = 0; k < childIElements.size(); k++){
-                        //IOCLContext childContext = (IOCLContext) childIElements.get(k);
-
-                        //if((boolean)childContext.evaluateOCL(patternConfigManager.oclInv[i][matchedIElements.get(counter).size()])){
-                        if(oclValidator.Validate(childIElements.get(k), patternConfigManager.oclInv[i][matchedIElements.get(counter).size()])){
-                            ArrayList<IElement> copyList = new ArrayList<IElement>(matchedIElements.get(counter));
-                            copyList.add(childIElements.get(k));
-                            matchedIElements.add(copyList);
-                            isChildMatched = true;
-                        }
-                    }
-
-                    counter++;
-                    /*
-
-                    if(isChildMatched){
-                        continue;
-                    }else{
-                        break;
-                    }
-
-                     */
-                    if(counter == matchedIElements.size()){
-                        break;
-                    }
-                }
-            }
 
             /*
             IOCLContext selectedContext = (IOCLContext) selectedPresentationIElement;
@@ -454,12 +461,18 @@ public class PatternMatchingController {
             }
 
              */
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
+
+        //Graph pattern matching
+        GraphPatternMatchingController graphPatternMatchingController = new GraphPatternMatchingController();
+        matchedIElements = graphPatternMatchingController.GraphPatternMatching(patternN, selectedPresentationIElement);
+        matchedAllIElements.set(patternN, matchedIElements);
 
         //matchしたpatternについてのview処理
-        if(matchedPatternIndex.isEmpty()){
+        if(false){//matchedPatternIndex.isEmpty()){
+            //緑の看板が押されているため必ずマッチはしている。将来の拡張のためにコードは残す
             System.out.println("No matched pattern");
         }else{
             System.out.println("Matched pattern");
@@ -480,22 +493,24 @@ public class PatternMatchingController {
                 i = patternN;//今回必要なパターンのみに限定
                 for(int j = 0; j < matchedAllIElements.get(i).size(); j++){
                     //System.out.println("matchedAllIElements["+i+"]["+j+"]");
-                    if(matchedAllIElements.get(i).get(j).get(0) == null){
-                        System.out.println("null");
-                    }else{
-                        //色分け機能のために、ここで色を決める
-                        String selectionColor = DefineSelectionColor(j);//16進数の演算で色を変更する
+
+                    //色分け機能のために、ここで色を決める
+                    String selectionColor = DefineSelectionColor(j);
 
 
-                        //System.out.println(((IArgumentAsset)matchedAllIElements.get(i).get(j).get(0)).getContent());
-                        //ApplyFunctionの呼び出し
-                        //Recommendationの表示
-                        ShowRecommendationView(i, matchedAllIElements.get(i).get(j), true,selectionColor, false);
+                    //System.out.println(((IArgumentAsset)matchedAllIElements.get(i).get(j).get(0)).getContent());
+                    //ApplyFunctionの呼び出し
+                    //Recommendationの表示
+                    ShowRecommendationView(i, matchedAllIElements.get(i).get(j), true,selectionColor, false);
 
 
-                    }
+
                 }
             }
+
+
+
+
 
             if(selectionSupportDataBase.isLLMMatch){
                 LLMMatch(patternN);
@@ -570,8 +585,12 @@ public class PatternMatchingController {
         }
 
         for(int i = 0; i < matchedIElements.size(); i++){
-            inputPatternParameterNames[i+1] = ((IArgumentAsset) matchedIElements.get(i)).getName();
-            System.out.println("inputPatternParameterNames["+(i+1)+"] = " + inputPatternParameterNames[i+1]);
+            //nullの場合はcontinue
+            if(matchedIElements.get(i) == null){
+                continue;
+            }
+            inputPatternParameterNames[i] = ((IArgumentAsset) matchedIElements.get(i)).getName();
+            System.out.println("inputPatternParameterNames["+(i)+"] = " + inputPatternParameterNames[i]);
         }
 
         int repeatN = 0;
@@ -674,18 +693,28 @@ public class PatternMatchingController {
     }
 
     public String DefineSelectionColor(int number){
-        //16進数の演算を利用して色を決める
-
-        //今は手動
-
+        //10パターンまで対応。その後はデフォルト値
         if(number == 0) {
             return "#f0f8ff";
         }else if(number == 1) {
             return "#87cefa";
         }else if(number == 2) {
             return "#6495ed";
+        }else if (number == 3) {
+            return "#ffa07a";
+        }else if (number == 4) {
+            return "#ffc0cb";
+        }else if (number == 5) {
+            return "#3cb371";
+        }else if (number == 6) {
+            return "#adff2f";
+        }else if (number == 7) {
+            return "#bdb76b";
+        }else if (number == 8) {
+            return "#ffa500";
+        }else if (number == 9) {
+            return "#da70d6";
         }
-
         return constClass.SELECTION_DEFAULT_COLOR;
     }
 

@@ -203,11 +203,11 @@ public class LLMPatternSearchController {
             if (!isVisited(current.iElement, nodeIPresentations, visited)) {
                 // ノードを訪問済みとしてマーク
                 visited[GetNodeIndex(current.iElement, nodeIPresentations)] = true;
-                System.out.println("Visited: " + current);
+                //System.out.println("Visited: " + current);
 
                 //sentenceに書き込みを行う
                 gsnDiagramSentence += WriteGSNLineSentence(current, isUnreachedGoalOnly);
-                System.out.println(gsnDiagramSentence);
+                //System.out.println(gsnDiagramSentence);
 
 
                 // 隣接ノードをスタックに追加（未訪問のもののみ）

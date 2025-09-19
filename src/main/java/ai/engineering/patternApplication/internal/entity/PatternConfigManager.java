@@ -54,10 +54,11 @@ public class PatternConfigManager {
             {"The model has just been retrained and need to be re-verified","Model well tested", "Use model testing method","Solving the high cost of re-verification and retesting", "Use smoke testing method", "Model well re-tested in each type of test", "Model passed {type X smoke testing}"},
             //P10のcontextは現在なし
             {"The machine learning system's application domain is clearly defined","System is safe to operate outside expected domain", "Switching to a non-ML system","Solving issues that do not guarantee a safe shutdown of the system within the warranty period", "Use rule-base safeguards","ML system is safe-guarded by rule-based function","Define threshold-based rules to override unsafe decisions made by the ML system"},
-            {"{The security requirement}", "The trained DNN satisfies {the security requirement}", "Argue through the DNN evaluation method", "{Justification of the chosen strategy}", "The {security requirement} is satisfied using test data",
-                    //5
+            {"{The security requirement}", "To build a convincing argument for the verification of the security requirements", "Validate each security requirement", "Solving the problem of trained DNNs not verifying {the security requirements}", "The model is already trained and verification is needed",
+                    "Argue through the DNN evaluation method", "{Justification of the chosen strategy}", "The {security requirement} is satisfied using test data",
+                    //
                     "{The test data}", "Test results", "The {security requirement} is satisfied using formal methods", "{The formal method}", "Argue over formal specification and verification of the security requirement",
-                    //10
+                    //
                     "{The formal specified property} is the appropraite formalization of {the security requirement}", "The formal model satisfies {the formal specified property}", "{The formal specified property}", "{Agreement over inspection conducted by domain and formalization expert}", "{Formal verification results}"},
 
             {"DNNs are deployed in security-critical domains where adversarial attacks are particularly significant", "Robustness of already trained DNN is suitable for context", "Use verification techniques", "Solving the problem that a security case based on the formal verification of robustness has yet to be verified",
@@ -129,7 +130,8 @@ public class PatternConfigManager {
             {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0]},
             {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[2]},
             {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[2]},
-            {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[4], constClass.argumentElementTypeNames[0],
+            {constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[3],
+                    constClass.argumentElementTypeNames[1], constClass.argumentElementTypeNames[4], constClass.argumentElementTypeNames[0],
                     constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[2], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[1],
                     constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[0], constClass.argumentElementTypeNames[3], constClass.argumentElementTypeNames[2], constClass.argumentElementTypeNames[2]},
 
@@ -181,12 +183,13 @@ public class PatternConfigManager {
             {{0,1},{1,2}}
              */
             {{3,0},{1,2},{2,3},{3,4},{4,5},{5,6},{5,7}},
-            {{1,0},{1,2},{2,3},{3,4},{4,5},{5,6}},
-            {{1,0},{1,2},{2,3},{3,4},{4,5},{5,6},{5,7}},
-            {{1,0},{1,2},{2,3},{3,4},{4,5}},
-            {{1,0},{1,2},{2,3},{3,4},{4,5},{5,6}},
             {{3,0},{1,2},{2,3},{3,4},{4,5},{5,6}},
-            {{1,0},{1,2},{2,3},{2,4},{2,7},{4,5},{4,6},{7,8},{7,9},{9,10},{9,11},{10,12},{10,13},{11,12},{11,14}},
+            {{3,0},{1,2},{2,3},{3,4},{4,5},{5,6},{5,7}},
+            {{3,0},{1,2},{2,3},{3,4},{4,5}},
+            {{3,0},{1,2},{2,3},{3,4},{4,5},{5,6}},
+            {{3,0},{1,2},{2,3},{3,4},{4,5},{5,6}},
+            {{3,0},{1,2},{2,3},{3,4},{3,5},{5,6},{5,7},{5,10},{7,8},{7,9},{10,11},{10,12},{12,13},{12,14},{13,15},{13,16},{14,15},{14,17}},
+//            {{3,0},{1,2},{2,3},{},{3,2},{2,3},{2,4},{2,7},{4,5},{4,6},{7,8},{7,9},{9,10},{9,11},{10,12},{10,13},{11,12},{11,14}},
             {{1,2},{2,3},{3,0},{3,4},{4,5},{4,6},{4,7},{5,8},{6,9},{8,10},{8,11},{8,12},{9,13},{9,14},{9,15},{9,16},{10,17},{11,18},{12,19},{13,20},{14,20},{15,20},{16,21}},
             //旧P7,8
 //            //Px Security requirement satisfaction argument patternは複数行
@@ -371,7 +374,7 @@ public class PatternConfigManager {
             0,
             3,
             0,
-            2,
+            1,
             0,
             0,
             0,
@@ -408,9 +411,30 @@ public class PatternConfigManager {
             {"self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*model)(?=.*train).*')", "self.oclIsTypeOf(Strategy)", "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*train)(?=.*data)(?=.*size).*')","self.oclIsTypeOf(Strategy)","self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*sample).*')"},
             {"self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*model)(?=.*test).*')", "self.oclIsTypeOf(Strategy)", "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*retest).*')","self.oclIsTypeOf(Strategy)","self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*smoke).*')"},
             {"self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*safe).*')", "self.oclIsTypeOf(Strategy)", "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*no)(?=.*(machine learning|ml))(?=.*domain).*')","self.oclIsTypeOf(Strategy)","self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*safeguard).*')"},
-            {"self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*dnn).*')"},//pending
-            {"self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*adversarial)(?=.*notice).*')"},//pending
+            {"self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*verif).*')", "self.oclIsTypeOf(Strategy)", "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*train)(?=.*verif).*')", "self.oclIsTypeOf(Context) and self.content.toLower().matches('(?=.*model)(?=.*train)(?=.*verif).*')",
+                    //5
+                    "self.oclIsTypeOf(Strategy)", "self.oclIsTypeOf(Justification)", "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*test data).*')", "self.oclIsTypeOf(Context)", "self.oclIsTypeOf(Solution)",
+                    //10
+                    "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*formal).*')", "self.oclIsTypeOf(Context)", "self.oclIsTypeOf(Strategy)", "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*formal).*')", "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*formal)(?=.*model).*')", "self.oclIsTypeOf(Context)"},
+            {"self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*dnn).*')", "self.oclIsTypeOf(Strategy)", "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*formal)(?=.*verif).*')", "self.oclIsTypeOf(Strategy)",
+                    //5
+                    "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*input)(?=.*verif).*')", "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*verif).*')", "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*integrat).*')", "self.oclIsTypeOf(Strategy)", "self.oclIsTypeOf(Strategy)",
+                    //10
+                    "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*represent).*')", "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*perturbat).*')", "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*domain).*')", "self.oclIsTypeOf(Goal)", "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*specif).*')", "self.oclIsTypeOf(Goal)", "self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*formal)(?=.*result).*')",},
             {"self.oclIsTypeOf(Goal) and self.content.toLower().matches('(?=.*dnn).*')"}
+    };
+
+    //0番目のOCL式はここに書く
+    public final String[] oclInv0Only = {
+            "self.oclIsTypeOf(Context) and self.content.toLower().matches('(?=.*model)(?=.*train)(?=.*important).*')",
+            "self.oclIsTypeOf(Context) and self.content.toLowerCase().matches('(?=.*model)(?=.*train)(?=.*adversarial).*')",
+            "self.oclIsTypeOf(Context) and self.content.toLowerCase().matches('(?=.*model)(?=.*train)(?=.*concept drift).*')",
+            "self.oclIsTypeOf(Context) and self.content.toLowerCase().matches('(?=.*model)(?=.*train)(?=.*data).*')",
+            "self.oclIsTypeOf(Context) and self.content.toLowerCase().matches('(?=.*model)(?=.*retrain).*')",
+            "self.oclIsTypeOf(Context) and self.content.toLowerCase().matches('(?=.*domain).*')",
+            "self.oclIsTypeOf(Context) and self.content.toLowerCase().matches('(?=.*require).*')",
+            "self.oclIsTypeOf(Context) and self.content.toLowerCase().matches('(?=.*dnn)(?=.*adversarial).*')",
+            "self.oclIsTypeOf(Context) and self.content.toLowerCase().matches('(?=.*dnn).*')",
     };
 
 

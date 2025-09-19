@@ -1,6 +1,9 @@
 package ai.engineering.patternApplication.internal;
 
 import ai.engineering.patternApplication.internal.entity.*;
+
+import java.util.*;
+
 public class LLMPatternMatchingController {
     private static String GSNPrompt = "";
 
@@ -117,36 +120,111 @@ public class LLMPatternMatchingController {
 //        return gsnDiagram;
     }
 
-    private String GeneratePatternPrompt(int patternN) {
+    public String GeneratePatternPrompt(int patternN) {
         //todo: パターンのgsnを作成
         String pattern = "";
 
-        if(patternN == 0){
-            //P1の場合
-            pattern =
-                "G1:Model well trained\n"
-                        + " S1:Use model repair techniques\n"
-                        + "  G2:Solving deficiencies hinder analysis and countermeasures\n"
-                        + "   C1:The model is already trained and some classes are more important than others\n"
-                        + "   S2:Use Machine Learning repair tool\n"
-                        + "    G3:Well reparation of {important class 1}\n"
-                        + "     Sn1.X:RepairPriority for {important class X} = {high}\n"
-                        + "     Sn2.X:PreventDegradation for {important class X} = {high}\n";
+//        if(patternN == 0){
+//            //P1の場合
+//            pattern =
+//                "G1:Model well trained\n"
+//                        + " S1:Use model repair techniques\n"
+//                        + "  G2:Solving deficiencies hinder analysis and countermeasures\n"
+//                        + "   C1:The model is already trained and some classes are more important than others\n"
+//                        + "   S2:Use Machine Learning repair tool\n"
+//                        + "    G3:Well reparation of {important class 1}\n"
+//                        + "     Sn1.X:RepairPriority for {important class X} = {high}\n"
+//                        + "     Sn2.X:PreventDegradation for {important class X} = {high}\n";
+//
+//        }else if(patternN == 5){
+//            //safeguardの場合
+//            pattern =
+//                "G1:System is safe to operate outside expected domain\n"
+//                        + " S1:Switching to a non-ML system\n"
+//                        + "  G2:Solving issues that do not guarantee a safe shutdown of the system within the warranty period\n"
+//                        + "   C1:The machine learning system's application domain is clearly defined\n"
+//                        + "   S2:Use rule-base safeguards\n"
+//                        + "    G3:ML system is safe-guarded by rule-based function\n"
+//                        + "     Sn1:Define threshold-based rules to override unsafe decisions made by the ML system\n";
+//        }
 
-        }else if(patternN == 5){
-            //safeguardの場合
-            pattern =
-                "G1:System is safe to operate outside expected domain\n"
-                        + " S1:Switching to a non-ML system\n"
-                        + "  G2:Solving issues that do not guarantee a safe shutdown of the system within the warranty period\n"
-                        + "   C1:The machine learning system's application domain is clearly defined\n"
-                        + "   S2:Use rule-base safeguards\n"
-                        + "    G3:ML system is safe-guarded by rule-based function\n"
-                        + "     Sn1:Define threshold-based rules to override unsafe decisions made by the ML system\n";
+        int[] idCount = new int[]{1, 1, 1, 1, 1, 1};//G,S,Sn,C,J,Aの順番
+//        for (int i = 1; i < patternConfigManager.patternParameterExplanationNames[patternN].length; i++) {
+//            pattern += GetGSNType(patternN, i) + idCount[GetGSNTypeInt(patternN, i)] + ":" + patternConfigManager.patternParameterExplanationNames[patternN][i] + "\n";
+//            idCount[GetGSNTypeInt(patternN, i)]++;
+//        }
+        //深さ優先探索で有向グラフを作る。stuckを利用。深さが1増えるごとに、" "を前方に一つ増やす。最後に改行
+        int[][] edges = patternConfigManager.patternLinkPair[patternN];
+        Stack<Integer> stack = new Stack<>();
+        stack.push(1);
+        int previousDepth = 0;
+        int[] depthMap = new int[patternConfigManager.patternParameterExplanationNames[patternN].length];
+
+        while (!stack.isEmpty()) {
+            int currentIndex = stack.pop();
+            int currentDepth = depthMap[currentIndex];
+
+            for(int i = 0; i < currentDepth; i++){
+                pattern += " ";
+            }
+
+            pattern += GetGSNType(patternN, currentIndex) + idCount[GetGSNTypeInt(patternN, currentIndex)] + ":" + patternConfigManager.patternParameterExplanationNames[patternN][currentIndex] + "\n";
+            idCount[GetGSNTypeInt(patternN, currentIndex)]++;
+            previousDepth = currentDepth;
+
+            //子ノードをスタックに追加（逆順で追加して、元の順序で処理されるようにする）
+            List<Integer> children = new ArrayList<>();
+            for (int[] edge : edges) {
+                if (edge[0] == currentIndex) {
+                    children.add(edge[1]);
+                    depthMap[edge[1]] = currentDepth + 1;
+                }
+            }
+            Collections.reverse(children);
+            for (int child : children) {
+                stack.push(child);
+            }
         }
 
-
         return pattern;
+    }
+
+    private String GetGSNType(int patternN, int index){
+        String type = patternConfigManager.patternParameterTypes[patternN][index];
+        if(type == "Goal"){
+            return "G";
+        }else if(Objects.equals(type, "Strategy")){
+            return "S";
+        }else if(Objects.equals(type, "Solution")){
+            return "Sn";
+        }else if(Objects.equals(type, "Context")){
+            return "C";
+        }else if(Objects.equals(type, "Justification")){
+            return "J";
+        }else if(Objects.equals(type, "Assumption")){
+            return "A";
+        }else{
+            return "";
+        }
+    }
+
+    private int GetGSNTypeInt(int patternN, int index){
+        String type = patternConfigManager.patternParameterTypes[patternN][index];
+        if(Objects.equals(type, "Goal")){
+            return 0;
+        }else if(Objects.equals(type, "Strategy")){
+            return 1;
+        }else if(Objects.equals(type, "Solution")){
+            return 2;
+        }else if(Objects.equals(type, "Context")){
+            return 3;
+        }else if(Objects.equals(type, "Justification")){
+            return 4;
+        }else if(Objects.equals(type, "Assumption")){
+            return 5;
+        }else{
+            return -1;
+        }
     }
 
 

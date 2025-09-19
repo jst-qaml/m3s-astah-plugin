@@ -3,6 +3,7 @@ ai/engineering/patternApplication/internal/extraTab/LLMPatternSearchTab$1.class
 ai/engineering/VersionFetcher.class
 ai/engineering/MLCanvas.class
 ai/engineering/DesiredPerformance.class
+ai/engineering/patternApplication/internal/GraphPatternMatchingController$Graph.class
 ai/engineering/CanvasElement.class
 ai/engineering/patternApplication/internal/extraTab/IntegerNaturalNumberInputVerifier.class
 ai/engineering/RelationNode.class
@@ -55,6 +56,7 @@ ai/engineering/patternApplication/internal/entity/SelectionSupportDataBase.class
 ai/engineering/MonitoringSummaryView$1.class
 ai/engineering/ConfigJsonGenerator.class
 ai/engineering/PipelinePerformanceView$2.class
+ai/engineering/patternApplication/internal/GraphPatternMatchingController$ChildLog.class
 ai/engineering/ClassNode$1.class
 ai/engineering/LabelConfiguration.class
 ai/engineering/patternApplication/internal/PatternMatchingController$3.class
@@ -70,6 +72,7 @@ ai/engineering/RelatedElementModel.class
 ai/engineering/patternApplication/internal/exception/APIException.class
 ai/engineering/TraceabilityRecommenderView.class
 ai/engineering/PerformanceCheckerAction.class
+ai/engineering/patternApplication/internal/GraphPatternMatchingController.class
 ai/engineering/MisclassificationPerformance.class
 ai/engineering/RepairModelAction$1.class
 ai/engineering/patternApplication/internal/LLMPatternSearchController$Node.class
